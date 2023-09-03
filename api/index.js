@@ -3,14 +3,17 @@ const app = express();
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/users');
 
 
 dotenv.config();
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URL)
-.then (console.log(`server connected`))
+mongoose.connect(process.env.MONGO_URL,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then (console.log(`server connected`))
 .catch((err) => console.log(`err: server not connected`));
 
 // app.use('/', (req, res)=>{
@@ -18,6 +21,7 @@ mongoose.connect(process.env.MONGO_URL)
 // })
 
 app.use('/api/auth', authRoute);
+app.use('/api/users', userRoute);
 
 app.listen('5000', ()=>{
     console.log(`Backend server start at port 5000`);
